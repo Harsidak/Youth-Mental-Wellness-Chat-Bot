@@ -1,0 +1,2 @@
+GEMINI_API_KEY = "AIzaSyDBgX_zvjfRUMO6WBiV8LuTbzanQufwivY"
+PINECONE_API_KEY ="pcsk_5riuxd_14gqRswu6GbwMbMrHgQiLnYfsTa34Cmj7JaTfuo8vEBfJyfMDPAAyfymZGKFNVm"

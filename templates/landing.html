@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en" class="bg-gray-900 text-white font-sans">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sahaara - Youth Mental Wellness</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Glassmorphism backdrop */
+        .glass {
+            backdrop-filter: blur(15px);
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Custom slider thumb */
+        .slider::-webkit-slider-thumb {
+            background: url('https://em-content.zobj.net/thumbs/160/apple/325/smiling-face-with-sunglasses_1f60e.png') no-repeat center;
+            background-size: contain;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: none;
+        }
+    </style>
+</head>
+<body class=" content-center min-h-screen  items-center justify-center p-4 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-950">
+<section class="flex justify-center items-center h-screen">
+    <div class="glass w-full max-w-5xl p-10 rounded-2xl shadow-2xl space-y-6">
+        <!-- Header -->
+        <div class="justify-between">
+            <div>
+            <div class="flex content-center items-center justify-center p-4 ">
+            <h1 class="justify-between items-center font-sans text-3xl font-bold">Sahaara AI Chat-Bot</h1>
+
+        </div>
+        <div class="flex content-center items-center justify-center ">
+        <p class="font-sans text-gray-300 text-sm">
+            Your private space to understand and track emotions — safe, simple, supportive.
+            </p>
+        </div>
+        </div>
+        <div class="flex content-center items-center justify-end ">
+        <select class="bg-gray-700 text-white p-2 rounded">
+                <option value="en">English</option>
+                <!-- Add other languages here -->
+            </select>
+        </div>
+        </div>
+        <!-- Age Group -->
+        <div class="space-y-2">
+            <label class="font-sans block font-medium">First, which age group are you in? <span class="text-gray-400 cursor-pointer"  >?</span></label>
+            <div class="flex gap-2 flex-wrap justify-center">
+                <button data-age="7-13" class="age-btn px-8 py-3 bg-gray-700 hover:bg-purple-600 hover:shadow-[0_0_15px_2px_rgba(139,92,246,0.5)] rounded-2xl transition">7-13</button>
+                <button data-age="14-17" class="age-btn px-8 py-3 bg-gray-700 hover:bg-purple-600 hover:shadow-[0_0_15px_2px_rgba(139,92,246,0.5)] rounded-2xl transition">14-17</button>
+                <button data-age="18-21" class="age-btn px-8 py-3 bg-gray-700 hover:bg-purple-600 hover:shadow-[0_0_15px_2px_rgba(139,92,246,0.5)] rounded-2xl transition">18-21</button>
+                <button data-age="22-25" class="age-btn px-8 py-3 bg-gray-700 hover:bg-purple-600 hover:shadow-[0_0_15px_2px_rgba(139,92,246,0.5)] rounded-2xl transition">22-25</button>
+            </div>
+        </div>
+
+        <!-- Feelings Dropdowns -->
+          <div class="space-y-2">
+            <button onclick="toggleDropdown('uplifting')" class="w-full flex justify-between items-center p-4 glass rounded-lg hover:bg-white/10 transition">
+                <span>Uplifting</span>
+                <svg xmlns="http://www.w3.org/2000/svg" id="icon-uplifting" class="w-5 h-5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+            </button>
+            <div id="dropdown-uplifting" class="hidden p-4 grid grid-cols-3 gap-2">
+                <button onclick="selectEmotion(this)" class="px-8 py-3 bg-gray-700 hover:bg-purple-600 hover:shadow-[0_0_15px_2px_rgba(139,92,246,0.5)] focus:bg-purple-600 focus:shadow-[0_0_15px_2px_rgba(139,92,246,0.5)] rounded-full transition">Amazed</button>
+                <button onclick="selectEmotion(this)" class="px-8 py-3 bg-gray-700 hover:bg-purple-600 hover:shadow-[0_0_15px_2px_rgba(139,92,246,0.5)] focus:bg-purple-600 focus:shadow-[0_0_15px_2px_rgba(139,92,246,0.5)] rounded-full transition">Amused</button>
+                <button onclick="selectEmotion(this)" class="px-8 py-3 bg-gray-700 hover:bg-purple-600 hover:shadow-[0_0_15px_2px_rgba(139,92,246,0.5)] focus:bg-purple-600 focus:shadow-[0_0_15px_2px_rgba(139,92,246,0.5)] rounded-full transition">Brave</button>
+                <button onclick="selectEmotion(this)" class="px-8 py-3 bg-gray-700 hover:bg-purple-600 hover:shadow-[0_0_15px_2px_rgba(139,92,246,0.5)] focus:bg-purple-600 focus:shadow-[0_0_15px_2px_rgba(139,92,246,0.5)] rounded-full transition">Calm</button>
+                <button onclick="selectEmotion(this)" class="px-8 py-3 bg-gray-700 hover:bg-purple-600 hover:shadow-[0_0_15px_2px_rgba(139,92,246,0.5)] focus:bg-purple-600 focus:shadow-[0_0_15px_2px_rgba(139,92,246,0.5)] rounded-full transition">Confident</button>
+                <button onclick="selectEmotion(this)" class="px-8 py-3 bg-gray-700 hover:bg-purple-600 hover:shadow-[0_0_15px_2px_rgba(139,92,246,0.5)] focus:bg-purple-600 focus:shadow-[0_0_15px_2px_rgba(139,92,246,0.5)] rounded-full transition">Content</button>
+                <button onclick="selectEmotion(this)" class="px-8 py-3 bg-gray-700 hover:bg-purple-600 hover:shadow-[0_0_15px_2px_rgba(139,92,246,0.5)] focus:bg-purple-600 focus:shadow-[0_0_15px_2px_rgba(139,92,246,0.5)] rounded-full transition">Excited</button>
+                <button onclick="selectEmotion(this)" class="px-8 py-3 bg-gray-700 hover:bg-purple-600 hover:shadow-[0_0_15px_2px_rgba(139,92,246,0.5)] focus:bg-purple-600 focus:shadow-[0_0_15px_2px_rgba(139,92,246,0.5)] rounded-full transition">Grateful</button>
+                <button onclick="selectEmotion(this)" class="px-8 py-3 bg-gray-700 hover:bg-purple-600 hover:shadow-[0_0_15px_2px_rgba(139,92,246,0.5)] focus:bg-purple-600 focus:shadow-[0_0_15px_2px_rgba(139,92,246,0.5)] rounded-full transition">Happy</button>
+                <button onclick="selectEmotion(this)" class="px-8 py-3 bg-gray-700 hover:bg-purple-600 hover:shadow-[0_0_15px_2px_rgba(139,92,246,0.5)] focus:bg-purple-600 focus:shadow-[0_0_15px_2px_rgba(139,92,246,0.5)] rounded-full transition">Hopeful</button>
+                <button onclick="selectEmotion(this)" class="px-8 py-3 bg-gray-700 hover:bg-purple-600 hover:shadow-[0_0_15px_2px_rgba(139,92,246,0.5)] focus:bg-purple-600 focus:shadow-[0_0_15px_2px_rgba(139,92,246,0.5)] rounded-full transition">Passionate</button>
+                <button onclick="selectEmotion(this)" class="px-8 py-3 bg-gray-700 hover:bg-purple-600 hover:shadow-[0_0_15px_2px_rgba(139,92,246,0.5)] focus:bg-purple-600 focus:shadow-[0_0_15px_2px_rgba(139,92,246,0.5)] rounded-full transition">Proud</button>
+                <button onclick="selectEmotion(this)" class="px-8 py-3 bg-gray-700 hover:bg-purple-600 hover:shadow-[0_0_15px_2px_rgba(139,92,246,0.5)] focus:bg-purple-600 focus:shadow-[0_0_15px_2px_rgba(139,92,246,0.5)] rounded-full transition">Relieved</button>
+                <button onclick="selectEmotion(this)" class="px-8 py-3 bg-gray-700 hover:bg-purple-600 hover:shadow-[0_0_15px_2px_rgba(139,92,246,0.5)] focus:bg-purple-600 focus:shadow-[0_0_15px_2px_rgba(139,92,246,0.5)] rounded-full transition">Satisfied</button>
+            </div>
+        </div>
+
+        <!-- Heavy Dropdown -->
+        <div class="space-y-2">
+            <button onclick="toggleDropdown('heavy')" class="w-full flex justify-between items-center p-4 glass rounded-lg hover:bg-white/10 transition">
+                <span>Heavy</span>
+                <svg xmlns="http://www.w3.org/2000/svg" id="icon-heavy" class="w-5 h-5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+            </button>
+            <div id="dropdown-heavy" class="hidden p-4 grid grid-cols-3 gap-2">
+                <button onclick="selectEmotion(this)" class="px-8 py-3 bg-gray-700 hover:bg-purple-600 hover:shadow-[0_0_15px_2px_rgba(139,92,246,0.5)] focus:bg-purple-600 focus:shadow-[0_0_15px_2px_rgba(139,92,246,0.5)] rounded-full transition">Angry</button>
+                <button onclick="selectEmotion(this)" class="px-8 py-3 bg-gray-700 hover:bg-purple-600 hover:shadow-[0_0_15px_2px_rgba(139,92,246,0.5)] focus:bg-purple-600 focus:shadow-[0_0_15px_2px_rgba(139,92,246,0.5)] rounded-full transition">Anxious</button>
+                <button onclick="selectEmotion(this)" class="px-8 py-3 bg-gray-700 hover:bg-purple-600 hover:shadow-[0_0_15px_2px_rgba(139,92,246,0.5)] focus:bg-purple-600 focus:shadow-[0_0_15px_2px_rgba(139,92,246,0.5)] rounded-full transition">Ashamed</button>
+                <button onclick="selectEmotion(this)" class="px-8 py-3 bg-gray-700 hover:bg-purple-600 hover:shadow-[0_0_15px_2px_rgba(139,92,246,0.5)] focus:bg-purple-600 focus:shadow-[0_0_15px_2px_rgba(139,92,246,0.5)] rounded-full transition">Disappointed</button>
+                <button onclick="selectEmotion(this)" class="px-8 py-3 bg-gray-700 hover:bg-purple-600 hover:shadow-[0_0_15px_2px_rgba(139,92,246,0.5)] focus:bg-purple-600 focus:shadow-[0_0_15px_2px_rgba(139,92,246,0.5)] rounded-full transition">Discouraged</button>
+                <button onclick="selectEmotion(this)" class="px-8 py-3 bg-gray-700 hover:bg-purple-600 hover:shadow-[0_0_15px_2px_rgba(139,92,246,0.5)] focus:bg-purple-600 focus:shadow-[0_0_15px_2px_rgba(139,92,246,0.5)] rounded-full transition">Guilty</button>
+                <button onclick="selectEmotion(this)" class="px-8 py-3 bg-gray-700 hover:bg-purple-600 hover:shadow-[0_0_15px_2px_rgba(139,92,246,0.5)] focus:bg-purple-600 focus:shadow-[0_0_15px_2px_rgba(139,92,246,0.5)] rounded-full transition">Hopeless</button>
+                <button onclick="selectEmotion(this)" class="px-8 py-3 bg-gray-700 hover:bg-purple-600 hover:shadow-[0_0_15px_2px_rgba(139,92,246,0.5)] focus:bg-purple-600 focus:shadow-[0_0_15px_2px_rgba(139,92,246,0.5)] rounded-full transition">Irritated</button>
+                <button onclick="selectEmotion(this)" class="px-8 py-3 bg-gray-700 hover:bg-purple-600 hover:shadow-[0_0_15px_2px_rgba(139,92,246,0.5)] focus:bg-purple-600 focus:shadow-[0_0_15px_2px_rgba(139,92,246,0.5)] rounded-full transition">Jealous</button>
+                <button onclick="selectEmotion(this)" class="px-8 py-3 bg-gray-700 hover:bg-purple-600 hover:shadow-[0_0_15px_2px_rgba(139,92,246,0.5)] focus:bg-purple-600 focus:shadow-[0_0_15px_2px_rgba(139,92,246,0.5)] rounded-full transition">Sad</button>
+            </div>
+        </div>
+
+        <!-- Turbulent Dropdown -->
+        <div class="space-y-2">
+            <button onclick="toggleDropdown('turbulent')" class="w-full flex justify-between items-center p-4 glass rounded-lg hover:bg-white/10 transition">
+                <span>Turbulent</span>
+                <svg xmlns="http://www.w3.org/2000/svg" id="icon-turbulent" class="w-5 h-5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+            </button>
+            <div id="dropdown-turbulent" class="hidden p-4 grid grid-cols-3 gap-2">
+                <button onclick="selectEmotion(this)" class="px-8 py-3 bg-gray-700 hover:bg-purple-600 hover:shadow-[0_0_15px_2px_rgba(139,92,246,0.5)] focus:bg-purple-600 focus:shadow-[0_0_15px_2px_rgba(139,92,246,0.5)] rounded-full transition">Drained</button>
+                <button onclick="selectEmotion(this)" class="px-8 py-3 bg-gray-700 hover:bg-purple-600 hover:shadow-[0_0_15px_2px_rgba(139,92,246,0.5)] focus:bg-purple-600 focus:shadow-[0_0_15px_2px_rgba(139,92,246,0.5)] rounded-full transition">Embarrassed</button>
+                <button onclick="selectEmotion(this)" class="px-8 py-3 bg-gray-700 hover:bg-purple-600 hover:shadow-[0_0_15px_2px_rgba(139,92,246,0.5)] focus:bg-purple-600 focus:shadow-[0_0_15px_2px_rgba(139,92,246,0.5)] rounded-full transition">Frustrated</button>
+                <button onclick="selectEmotion(this)" class="px-8 py-3 bg-gray-700 hover:bg-purple-600 hover:shadow-[0_0_15px_2px_rgba(139,92,246,0.5)] focus:bg-purple-600 focus:shadow-[0_0_15px_2px_rgba(139,92,246,0.5)] rounded-full transition">Indifferent</button>
+                <button onclick="selectEmotion(this)" class="px-8 py-3 bg-gray-700 hover:bg-purple-600 hover:shadow-[0_0_15px_2px_rgba(139,92,246,0.5)] focus:bg-purple-600 focus:shadow-[0_0_15px_2px_rgba(139,92,246,0.5)] rounded-full transition">Overwhelmed</button>
+            </div>
+        </div>
+
+
+
+        <!-- Slider -->
+        <div class="space-y-2">
+           <div class="flex justify-between align-center">
+                <label  class="font-sans block font-medium">How strong are these feelings?</label>
+                <div id="intensity-label" class="text-center mt-2">5</div>
+           </div>
+            <input type="range" id="intensity" min="1" max="10" value="5" class="slider w-full accent-purple-500">
+            <div class="flex justify-between items-center text-sm text-gray-400">
+                <span>😟</span>
+                <span>😄</span>
+            </div>
+        </div>
+
+        <!-- Start Button -->
+        <button id="start-btn" class="w-full bg-purple-600 hover:bg-purple-700 p-3 rounded-lg font-bold transition">
+Start Conversation
+        </button>
+    </div>
+    <script>
+        function toggleDropdown(category) {
+            const dropdown = document.getElementById(`dropdown-${category}`);
+            const icon = document.getElementById(`icon-${category}`);
+            const isOpen = !dropdown.classList.contains('hidden');
+            dropdown.classList.toggle('hidden');
+            icon.classList.toggle('rotate-180', !isOpen);
+        }
+    </script>
+</section>
+    <!-- Footer -->
+    <footer class="font-sans w-full text-center p-4 text-xs text-gray-400 max-w-md mx-auto mt-4">
+        Disclaimer: Sahaara is an AI assistant and not a substitute for professional medical advice. If you are in crisis, please contact a local emergency service.
+    </footer>
+<script>
+  (function(){
+    // Track selected age group
+    let selectedAge = null;
+
+    // Track selected emotions
+    const selectedEmotions = new Set();
+
+    // Cache DOM
+    const startBtn = document.getElementById("start-btn");
+    const intensityInput = document.getElementById("intensity");
+    const intensityLabel = document.getElementById("intensity-label");
+
+    // Age button click handling
+    document.querySelectorAll(".age-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+            selectedAge = btn.getAttribute("data-age");
+            // Highlight selected button
+            document.querySelectorAll(".age-btn").forEach(b => b.classList.remove("bg-purple-600"));
+            btn.classList.add("bg-purple-600");
+        });
+    });
+
+    // Intensity slider handling
+    if (intensityInput && intensityLabel) {
+      intensityInput.addEventListener("input", () => {
+          intensityLabel.textContent = intensityInput.value;
+      });
+    }
+
+    // Emotion selection handling
+    window.toggleDropdown = function(id) {
+        const dropdown = document.getElementById('dropdown-' + id);
+        const icon = document.getElementById('icon-' + id);
+        if (!dropdown || !icon) return;
+        if (dropdown.classList.contains('hidden')) {
+            dropdown.classList.remove('hidden');
+            icon.classList.add('rotate-180');
+        } else {
+            dropdown.classList.add('hidden');
+            icon.classList.remove('rotate-180');
+        }
+    }
+
+    window.selectEmotion = function(button) {
+        const emotion = button.innerText.trim();
+        if (selectedEmotions.has(emotion)) {
+            selectedEmotions.delete(emotion);
+            button.classList.remove('bg-purple-600');
+        } else {
+            selectedEmotions.add(emotion);
+            button.classList.add('bg-purple-600');
+        }
+    }
+
+    // Helper: enable/disable start btn
+    function setStartBusy(busy) {
+      if (!startBtn) return;
+      startBtn.disabled = busy;
+      if (busy) startBtn.classList.add('opacity-60', 'cursor-not-allowed');
+      else startBtn.classList.remove('opacity-60', 'cursor-not-allowed');
+    }
+
+    // Handle Start Conversation button click
+    startBtn?.addEventListener("click", async (ev) => {
+        ev?.preventDefault?.();
+
+        const intensity = intensityInput ? intensityInput.value : "5";
+
+        if (!selectedAge) {
+            alert("Please select an age group.");
+            return;
+        }
+
+        if (selectedEmotions.size === 0) {
+            alert("Please select at least one emotion.");
+            return;
+        }
+
+        const emotionsArray = Array.from(selectedEmotions);
+
+        const payload = {
+            age: selectedAge,
+            emotions: emotionsArray,
+            intensity: intensity
+        };
+
+        setStartBusy(true);
+
+        try {
+            const resp = await fetch('/start-chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            // If server returned non-2xx, try to parse and surface message
+            if (!resp.ok) {
+                let msg = `Failed to start chat (status ${resp.status}).`;
+                try {
+                    const err = await resp.json();
+                    msg = err.detail || err.message || msg;
+                } catch (_) {
+                    try { msg = await resp.text(); } catch(_) {}
+                }
+                alert(msg);
+                setStartBusy(false);
+                return;
+            }
+
+            const data = await resp.json();
+            console.log("Server Response:", data);
+
+            // Save server response into sessionStorage — critical for chat page
+            if (data.ai_response) {
+                sessionStorage.setItem('sahaara_initial_response', data.ai_response);
+            }
+            if (data.user_data) {
+                // ensure it's a string
+                sessionStorage.setItem('sahaara_user_data', JSON.stringify(data.user_data));
+            } else {
+                // fallback: save what we sent
+                sessionStorage.setItem('sahaara_user_data', JSON.stringify(payload));
+            }
+
+            // Navigate to chat page (absolute path)
+            window.location.href = "/chat.html";
+
+        } catch (err) {
+            console.error("Error starting chat:", err);
+            alert("Network error starting conversation. Check your connection and try again.");
+            setStartBusy(false);
+        }
+    });
+  })();
+</script>
+
+</body>
+</html>

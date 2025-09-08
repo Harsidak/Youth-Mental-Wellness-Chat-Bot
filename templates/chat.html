@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Sahaara Chat</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .glass {
+            backdrop-filter: blur(15px);
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        #chatArea::-webkit-scrollbar { width: 8px; }
+        #chatArea::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.05); }
+        #chatArea::-webkit-scrollbar-thumb {
+            background-color: rgba(139, 92, 246, 0.6);
+            border-radius: 10px;
+            border: 2px solid rgba(255, 255, 255, 0.05);
+        }
+        /* Minimal helper for the inline error message (keeps UI intact) */
+        .inline-error { color: #fca5a5; font-size: 0.9rem; }
+        .link-btn { color: #c4b5fd; font-weight: 600; text-decoration: underline; cursor: pointer; }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-gray-900 to-gray-800 text-white min-h-screen flex flex-col items-center justify-center p-4 sm:p-6">
+
+    <div class="w-full max-w-4xl h-[90vh] flex flex-col glass rounded-xl shadow-[0_0_15px_2px_rgba(255,255,255,0.1)] overflow-hidden">
+        <div class="p-4 border-b border-gray-700 text-center">
+            <h1 class="font-bold text-xl">Sahaara AI</h1>
+        </div>
+        <div id="chatArea" class="flex-1 overflow-y-auto p-6 md:p-10 space-y-6">
+            <!-- Messages are dynamically inserted here -->
+        </div>
+        <div class="p-4 sm:p-5 border-t border-gray-700">
+            <div class="flex space-x-2 items-center">
+                <input id="userInput" type="text" placeholder="Type your message..." class="glass flex-1 bg-gray-700 p-3 rounded-lg focus:outline-none text-white placeholder-gray-400" disabled/>
+                <button id="sendBtn" class="w-12 h-12 bg-purple-600 hover:bg-purple-700 rounded-lg flex items-center justify-center text-white text-2xl font-bold transition-transform transform active:scale-90" disabled>
+                    ➤
+                </button>
+            </div>
+        </div>
+    </div>
+    <footer class="p-4 text-center text-xs text-white/50">
+        Disclaimer: Sahaara is an AI assistant. For crisis support, contact emergency services.
+    </footer>
+
+<script>
+    // Elements
+    const chatArea = document.getElementById('chatArea');
+    const userInput = document.getElementById('userInput');
+    const sendBtn = document.getElementById('sendBtn');
+
+    // State
+    let userData = null;
+    let conversationHistory = []; // array of {role: 'user'|'assistant', content: string}
+
+    // Helper: create and append messages
+    function addMessage(sender, text, rawHTML = false) {
+        // Keep original content (no html tags) in history
+        if (sender === 'user') {
+            conversationHistory.push({ role: 'user', content: text });
+        } else {
+            conversationHistory.push({ role: 'assistant', content: text });
+        }
+
+        const messageDiv = document.createElement('div');
+        // Structure and classes preserved from original file
+        if (sender === 'ai') {
+            messageDiv.className = "flex space-x-3 items-end";
+            const innerHTML = `
+                <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-lg shrink-0">🤖</div>
+                <div class="font-sans bg-gradient-to-tr from-gray-600 to-gray-700 p-4 rounded-tl-lg rounded-tr-lg rounded-br-lg max-w-[85%] text-sm">
+                    ${ rawHTML ? text : escapeAndPreserveLinebreaks(text) }
+                </div>`;
+            messageDiv.innerHTML = innerHTML;
+        } else {
+            messageDiv.className = "flex justify-end space-x-3 items-end";
+            const innerHTML = `
+                <div class="max-w-[85%] bg-gradient-to-tl from-purple-600 to-purple-700 p-3 rounded-tl-lg rounded-tr-lg rounded-bl-lg text-sm">
+                    ${ escapeAndPreserveLinebreaks(text) }
+                </div>
+                <div class="bg-gray-700 w-8 h-8 rounded-full flex items-center justify-center text-lg shrink-0">👤</div>`;
+            messageDiv.innerHTML = innerHTML;
+        }
+
+        chatArea.appendChild(messageDiv);
+        chatArea.scrollTop = chatArea.scrollHeight;
+    }
+
+    function escapeAndPreserveLinebreaks(s) {
+        if (!s) return '';
+        // naive XSS protection: escape < & >
+        const escaped = s.replace(/&/g, "&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+        return escaped.replace(/\n/g, '<br>');
+    }
+
+    // Typing indicator
+    function showTypingIndicator() {
+        if (document.getElementById('typingIndicator')) return;
+        const typingIndicator = document.createElement('div');
+        typingIndicator.id = "typingIndicator";
+        typingIndicator.className = "flex space-x-3 items-end";
+        typingIndicator.innerHTML = `
+            <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-lg shrink-0">🤖</div>
+            <div class="font-sans bg-gradient-to-tr from-gray-600 to-gray-700 p-4 rounded-tl-lg rounded-tr-lg rounded-br-lg">
+                <div class="flex items-center space-x-1">
+                    <span class="w-2 h-2 bg-white rounded-full animate-pulse"></span>
+                    <span class="w-2 h-2 bg-white rounded-full animate-pulse" style="animation-delay: 0.2s;"></span>
+                    <span class="w-2 h-2 bg-white rounded-full animate-pulse" style="animation-delay: 0.4s;"></span>
+                </div>
+            </div>`;
+        chatArea.appendChild(typingIndicator);
+        chatArea.scrollTop = chatArea.scrollHeight;
+    }
+
+    function removeTypingIndicator() {
+        const el = document.getElementById('typingIndicator');
+        if (el) el.remove();
+    }
+
+    // Send message to backend
+    async function sendMessage() {
+        const userText = userInput.value.trim();
+        if (userText === '' || !userData) return;
+
+        // Local echo
+        addMessage('user', userText);
+        userInput.value = '';
+        userInput.disabled = true;
+        sendBtn.disabled = true;
+        showTypingIndicator();
+
+        try {
+            // Send full conversationHistory (do not slice off last)
+            const payload = {
+                user_data: userData,
+                user_query: userText,
+                history: conversationHistory // includes user's message just pushed above
+            };
+
+            const response = await fetch('/chat-turn', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            removeTypingIndicator();
+
+            if (response.ok) {
+                const data = await response.json();
+                // Accept both raw HTML ai_response (rare) or plain text
+                const aiResp = data.ai_response || "I couldn't generate a reply. Try again.";
+                // If response seems to include an anchor tag, allow raw HTML for that message only
+                const allowRaw = typeof aiResp === 'string' && aiResp.includes('<a ');
+                addMessage('ai', aiResp, allowRaw);
+            } else {
+                let errText = 'Please try again.';
+                try {
+                    const err = await response.json();
+                    errText = err.detail || err.message || errText;
+                } catch {}
+                addMessage('ai', `I apologize, an error occurred: ${errText}`);
+            }
+        } catch (error) {
+            console.error("Fetch error:", error);
+            removeTypingIndicator();
+            addMessage('ai', 'There seems to be a connection issue. Please check your network.');
+        } finally {
+            userInput.disabled = false;
+            sendBtn.disabled = false;
+            userInput.focus();
+        }
+    }
+
+    // --- Initialization on page load ---
+    document.addEventListener('DOMContentLoaded', () => {
+        const initialResponse = sessionStorage.getItem('sahaara_initial_response');
+        const userDataString = sessionStorage.getItem('sahaara_user_data');
+
+        let sessionOk = false;
+
+        if (initialResponse && userDataString) {
+            try {
+                userData = JSON.parse(userDataString);
+                // Add the AI initial message to chat and to history.
+                // The initialResponse may contain HTML (links). If it contains <a, render raw HTML carefully.
+                const allowRaw = initialResponse.includes('<a ');
+                addMessage('ai', initialResponse, allowRaw);
+                sessionOk = true;
+            } catch (error) {
+                console.error("Failed to parse session data:", error);
+                sessionOk = false;
+            }
+        }
+
+        if (sessionOk) {
+            // enable controls
+            userInput.disabled = false;
+            sendBtn.disabled = false;
+            userInput.focus();
+            // DO NOT remove sessionStorage here: let user refresh without losing session.
+        } else {
+            // Show clear instruction inside chat area (keeps UI)
+            const errorDiv = document.createElement('div');
+            errorDiv.className = "font-sans bg-gradient-to-tr from-gray-600 to-gray-700 p-4 rounded-tl-lg rounded-tr-lg rounded-br-lg max-w-[85%] text-sm inline-error";
+            errorDiv.innerHTML = `
+                Welcome! The session did not start correctly. Please return to the landing page to begin.
+                <br><br>
+                <span class="link-btn" id="returnHome">Return to Home</span>
+            `;
+            chatArea.appendChild(errorDiv);
+            document.getElementById('returnHome').addEventListener('click', () => {
+                // navigate back to landing - exact path used in your app
+                window.location.href = "/";
+            });
+            // keep inputs disabled
+            userInput.disabled = true;
+            sendBtn.disabled = true;
+        }
+    });
+
+    // wire up send controls
+    sendBtn.addEventListener('click', sendMessage);
+    // use keydown for Enter detection (more reliable)
+    userInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            if (!sendBtn.disabled) sendMessage();
+        }
+    });
+
+</script>
+</body>
+</html>
