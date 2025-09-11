@@ -3,6 +3,11 @@ from pinecone import Pinecone
 from langchain_google_genai import ChatGoogleGenerativeAI
 from Credentials import GEMINI_API_KEY, PINECONE_API_KEY
 
+
+#Following update by me, Suryansh, uncomment it to see if it works, then comment it out again if it doesn't :-
+#from googletrans import Translator
+# My edits end here
+
 # 1️⃣ Initialize embedding model
 embedding = GoogleGenerativeAIEmbeddings(
     model="models/embedding-001",
